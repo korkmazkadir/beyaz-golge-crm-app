@@ -19,21 +19,30 @@ class Icons extends React.Component {
     super(props, context);
 
     var athleteLinkParam = "";
+    var preRegistrationParam = null;
     const { location }  = this.props;
     if(location.state){
         athleteLinkParam = location.state.athleteLink;
-        console.log("Athlete link : " + athleteLinkParam);
+        preRegistrationParam = location.state.preRegistration;
     }
 
     this.hideForms = this.hideForms.bind(this);
     this.showPreRegistrationForm = this.showPreRegistrationForm.bind(this);
     this.showFinalRegistrationForm = this.showFinalRegistrationForm.bind(this);
 
+
     this.state = {
       isPreRegistrationFormVisible : false,
       isFinalRegistrationFormVisible : false,
-      athleteLink : athleteLinkParam
+      athleteLink : athleteLinkParam,
+      preRegistration : preRegistrationParam
     };
+
+    if(preRegistrationParam){
+      console.log("Pre Registration : " + JSON.stringify(preRegistrationParam));
+      this.state.isFinalRegistrationFormVisible = true;
+    }
+
   }
 
 
@@ -120,7 +129,7 @@ class Icons extends React.Component {
               </CardHeader>
               <CardBody className="all-icons">
 
-                <FinalRegistrationForm  athleteLink={this.state.athleteLink} />
+                <FinalRegistrationForm preRegistration={this.state.preRegistration} athleteLink={this.state.athleteLink} />
 
               </CardBody>
             </Card>

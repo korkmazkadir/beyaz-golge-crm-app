@@ -2,7 +2,7 @@
 
 const API_BASE = "http://localhost:8080";
 
-const SERVICE_URL = API_BASE + "/registration";
+const SERVICE_URL = API_BASE + "/meeting";
 
 function handleErrors(response) {
     if (!response.ok) {
@@ -26,9 +26,9 @@ function getApplicationHalJsonHeader(){
 }
 
 
-const registrationConnector = {
+const meetingConnector = {
 
-  getRegistrations : function(successCallback,errorCallback){
+  getMeetings : function(successCallback,errorCallback){
     fetch(SERVICE_URL)
       .then(handleErrors)
       .then(response => response.json())
@@ -36,7 +36,7 @@ const registrationConnector = {
       .catch(error => errorCallback(error) );
   },
 
-  getRegistration : function(link,successCallback,errorCallback){
+  getMeeting : function(link,successCallback,errorCallback){
     fetch(link)
       .then(handleErrors)
       .then(response => response.json())
@@ -44,11 +44,11 @@ const registrationConnector = {
       .catch(error => errorCallback(error) );
   },
 
-  createRegistration : function(registration,successCallback,errorCallback){
+  createMeeting : function(meeting,successCallback,errorCallback){
     fetch(SERVICE_URL, {
       method: 'POST',
       headers: getApplicationHalJsonHeader(),
-      body: JSON.stringify(registration)
+      body: JSON.stringify(meeting)
     })
       .then(handleErrors)
       .then(response => response.json())
@@ -56,11 +56,11 @@ const registrationConnector = {
       .catch(error => errorCallback(error) );
   },
 
-  updateRegistration : function(registration,link,successCallback,errorCallback){
+  updateMeeting : function(meeting,link,successCallback,errorCallback){
     fetch(link, {
       method: 'PUT',
       headers: getApplicationJsonHeader(),
-      body: JSON.stringify(registration)
+      body: JSON.stringify(meeting)
     })
       .then(handleErrors)
       .then(response => response.json())
@@ -68,23 +68,15 @@ const registrationConnector = {
       .catch(error => errorCallback(error) );
   },
 
-  deleteRegistration : function(link,successCallback,errorCallback){
+  deleteMeeting : function(link,successCallback,errorCallback){
     fetch(link, {
       method: 'DELETE'
     })
       .then(handleErrors)
       .then( x => successCallback() )
       .catch(error => errorCallback(error) );
-  },
-
-  getMeetings : function(link,successCallback,errorCallback){
-    fetch(link + "?sort=date,desc")
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(data => successCallback(data) )
-      .catch(error => errorCallback(error) );
   }
 
 }
 
-export default registrationConnector;
+export default meetingConnector;

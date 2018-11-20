@@ -12,18 +12,50 @@ import Button from 'react-bootstrap/lib/Button';
 
 import athleteConnector from "api_connector/AthleteConnector.jsx";
 
+import PreRegistrationDetailModal from "components/CampDetail/PreRegistrationDetailModal.jsx";
+import MeetingAddModal from "components/CampDetail/MeetingAddModal.jsx";
+
 class PreRegistrationListItem extends React.Component {
 
   constructor(props, context) {
     super(props, context);
 
-    console.log("XXXXXXX");
+    this.showDetails = this.showDetails.bind(this);
+    this.hideDetails = this.hideDetails.bind(this);
+
+    this.showMeetingAdd = this.showMeetingAdd.bind(this);
+    this.hideMeetingAdd = this.hideMeetingAdd.bind(this);
+
+    this.getAthleteName = this.getAthleteName.bind(this);
 
     this.state = {
         athlete : null,
-        athleteReady : false
+        athleteLink : "",
+        athleteReady : false,
+        isDetaislVisible : false,
+        isMeetingAddVisible : false
     };
 
+  }
+
+  showMeetingAdd(){
+    this.setState({isMeetingAddVisible : true});
+  }
+
+  hideMeetingAdd(){
+    this.setState({isMeetingAddVisible : false});
+  }
+
+  showDetails(){
+    this.setState({isDetaislVisible : true});
+  }
+
+  hideDetails(){
+    this.setState({isDetaislVisible : false});
+  }
+
+  getAthleteName(){
+    return this.state.athlete.athleteInfo.name + " " + this.state.athlete.athleteInfo.surname;
   }
 
   componentDidMount(){
@@ -34,6 +66,7 @@ class PreRegistrationListItem extends React.Component {
           console.log("Athlete : " + JSON.stringify(athlete));
           this.setState({
             athlete : athlete,
+            athleteLink : athlete._links.self.href,
             athleteReady : true
           });
         },
@@ -63,14 +96,36 @@ class PreRegistrationListItem extends React.Component {
      this.state.athlete ?
 
         <tr>
-          <td>{this.state.athlete.athleteInfo.name + " " + this.state.athlete.athleteInfo.surname}</td>
+          <td>{this.getAthleteName()}</td>
           <td>
             <Moment format="DD.MM.YYYY">
                 {this.state.athlete.athleteInfo.birthDate}
             </Moment>
           </td>
-          <td><a href="#" >ön kayıt detayı</a></td>
-          <td><a href="#" >görüşme ekle</a></td>
+          <td>
+            <a href="#" onClick={this.showDetails}>ön kayıt detayı</a>
+          </td>
+
+          <td>
+            <a href="#" onClick={this.showMeetingAdd}>görüşme ekle</a>
+          </td>
+
+          <PreRegistrationDetailModal
+            preRegistration={this.props.preRegistration}
+            athleteLink={this.state.athleteLink}
+            athleteName={this.getAthleteName()}
+            registrationLink={this.props.preRegistration._links.self.href}
+            isVisible={this.state.isDetaislVisible}
+            close={this.hideDetails}/>
+
+          <MeetingAddModal
+            preRegistraton={this.props.preRegistration}
+            athleteName={this.getAthleteName()}
+            registrationLink={this.props.preRegistration._links.self.href}
+            isVisible={this.state.isMeetingAddVisible}
+            close={this.hideMeetingAdd}
+            />
+
         </tr> : null
 
     );

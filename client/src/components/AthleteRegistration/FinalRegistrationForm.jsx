@@ -44,7 +44,7 @@ class FinalRegistrationForm extends React.Component {
     this.state = {
       campRegistrationLink : "",
       date: new Date(),
-      price : "",
+      price : 0,
       advancePayment : "",
       numberOfInstallments : 0,
       joiningDate: "",
@@ -60,6 +60,21 @@ class FinalRegistrationForm extends React.Component {
       registrationLink : ""
     };
 
+    if(this.props.preRegistration){
+      console.log("-->Pre registration : " + this.props.preRegistration);
+      const preReg = this.props.preRegistration;
+      this.state.price = preReg.preRegistration.priceOffer;
+      this.state.registrationLink = preReg._links.self.href;
+
+      campConnector.getCamp(preReg._links.camp.href,(camp)=>{
+          this.setState({
+            campRegistrationLink : camp._links.self.href
+          });
+      },(error)=>{
+        console.error("Get camp error : " + error);
+      });
+
+    }
 
   }
 
@@ -353,7 +368,8 @@ class FinalRegistrationForm extends React.Component {
 
 
 FinalRegistrationForm.propTypes = {
-  athleteLink: PropTypes.string
+  athleteLink: PropTypes.string,
+  preRegistration : PropTypes.object
 };
 
 

@@ -5,6 +5,7 @@ com/kadirkorkmaz/react/entity/Camp.class
 com/kadirkorkmaz/react/entity/Contact.class
 com/kadirkorkmaz/react/controller/BeerController.class
 com/kadirkorkmaz/react/entity/Athlete.class
+com/kadirkorkmaz/react/repository/MeetingRepository.class
 com/kadirkorkmaz/react/entity/Payment.class
 com/kadirkorkmaz/react/entity/FinalRegistration.class
 com/kadirkorkmaz/react/repository/PaymentRepository.class
